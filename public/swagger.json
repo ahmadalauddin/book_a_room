@@ -1,0 +1,393 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"User": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Room": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"bookings": {
+						"items": {
+							"$ref": "#/components/schemas/Booking"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"bookings"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Booking": {
+				"properties": {
+					"date": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"userId": {
+						"type": "number",
+						"format": "double"
+					},
+					"user": {
+						"$ref": "#/components/schemas/User"
+					},
+					"roomId": {
+						"type": "number",
+						"format": "double"
+					},
+					"room": {
+						"$ref": "#/components/schemas/Room"
+					}
+				},
+				"required": [
+					"date",
+					"createdAt",
+					"updatedAt",
+					"userId",
+					"user",
+					"roomId",
+					"room"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ObjectLiteral": {
+				"description": "Interface of the simple literal object with any string keys.",
+				"properties": {},
+				"type": "object",
+				"additionalProperties": {}
+			},
+			"InsertResult": {
+				"description": "Result object returned by InsertQueryBuilder execution.",
+				"properties": {
+					"identifiers": {
+						"items": {
+							"$ref": "#/components/schemas/ObjectLiteral"
+						},
+						"type": "array",
+						"description": "Contains inserted entity id.\nHas entity-like structure (not just column database name and values)."
+					},
+					"generatedMaps": {
+						"items": {
+							"$ref": "#/components/schemas/ObjectLiteral"
+						},
+						"type": "array",
+						"description": "Generated values returned by a database.\nHas entity-like structure (not just column database name and values)."
+					},
+					"raw": {
+						"description": "Raw SQL result returned by executed query."
+					}
+				},
+				"required": [
+					"identifiers",
+					"generatedMaps",
+					"raw"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IRoomPayload": {
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IUserPayload": {
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IBookingPayload": {
+				"properties": {
+					"roomId": {
+						"type": "number",
+						"format": "double"
+					},
+					"userId": {
+						"type": "number",
+						"format": "double"
+					},
+					"date": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"roomId",
+					"userId",
+					"date"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "book-a-room",
+		"version": "1.0.0",
+		"description": "A small company has an internal system to handle their meeting rooms",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {
+			"name": "Muhammad Ahmad"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/rooms": {
+			"get": {
+				"operationId": "GetRooms",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Room"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Room"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateRoom",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InsertResult"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Room"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IRoomPayload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/rooms/available/{date}": {
+			"get": {
+				"operationId": "GetAvailableRooms",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Room"
+									},
+									"type": "array",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Room"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "date",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/users": {
+			"get": {
+				"operationId": "GetUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/User"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InsertResult"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUserPayload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/bookings": {
+			"get": {
+				"operationId": "GetBookings",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Booking"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Booking"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateBooking",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InsertResult"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Booking"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IBookingPayload"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

@@ -1,8 +1,13 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "skipLibCheck": true,
-        "outDir": "./build",
-        "rootDirs": ["./src"],
-    }
+     "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "outDir": "./build",
+      "rootDir": "./",
+      "strict": true,
+      "esModuleInterop": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "baseUrl": "./",
+    },
 }
