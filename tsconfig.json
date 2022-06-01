@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "skipLibCheck": true,
+        "outDir": "./build",
+        "rootDirs": ["./src"],
+    }
+}
