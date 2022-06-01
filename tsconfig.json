@@ -1,13 +1,18 @@
 {
-     "compilerOptions": {
-      "target": "es6",
-      "module": "commonjs",
-      "outDir": "./build",
-      "rootDir": "./",
-      "strict": true,
-      "esModuleInterop": true,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      "baseUrl": "./",
-    },
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./build",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": "./",
+    "paths": {
+      "tests/*": ["tests/*"]
+    }
+  },
+  "include": [ "tests/**/*"],
+  "exclude": []
 }

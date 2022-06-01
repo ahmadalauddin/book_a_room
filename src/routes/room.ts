@@ -1,5 +1,6 @@
 import express from "express";
 import RoomController from "../controllers/room";
+import checkAvailableRooms  from "../middlewares/validations/room";
 
 const router = express.Router();
 const controller = new RoomController();
@@ -18,7 +19,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/available/:date",  async (req, res) => {
+router.get("/available/:date", checkAvailableRooms,  async (req, res) => {
   const response = await controller.getAvailableRooms(req.params.date);
   if (!response) res.status(404).send({ message: "No available meeting rooms found" });
   return res.status(200).send(response);

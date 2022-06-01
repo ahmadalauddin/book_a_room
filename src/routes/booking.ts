@@ -1,5 +1,6 @@
 import express from "express";
 import BookingController from "../controllers/booking";
+import checkBookingPayload from "../middlewares/validations/booking";
 
 const router = express.Router();
 const controller = new BookingController();
@@ -9,7 +10,7 @@ router.get("/", async (_req, res) => {
   return res.status(200).send(response);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", checkBookingPayload , async (req, res) => {
   try {
     const response = await controller.createBooking(req.body);
     return res.send(response.identifiers);
